@@ -24,8 +24,10 @@ logintoboggan.denied:
     _access: 'TRUE'
 
 logintobogganform.settings:
-  path: '/admin/config/system/logintoboggan'
-  defaults:
-     _form: '\Drupal\logintoboggan\Form\LogintobogganSettingsForm'
-  requirements:
-    _permission: 'administer site configuration'
+   path: '/admin/config/system/logintoboggan'
+   defaults:
+      _form: '\Drupal\logintoboggan\Form\LogintobogganSettingsForm'
+      _title: 'LoginToboggan'
+   requirements:
+     _permission: 'administer account settings'
+

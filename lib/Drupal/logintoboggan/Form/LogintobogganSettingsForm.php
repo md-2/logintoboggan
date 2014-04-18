@@ -7,29 +7,27 @@
 namespace Drupal\logintoboggan\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
-use Drupal\Core\Config\ConfigFactory;
-use Drupal\Core\Config\Context\ContextInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * Configure search settings for this site.
  */
 class LogintobogganSettingsForm extends ConfigFormBase {
 
-// protected $roleStorage;
-//   public function __construct(ModuleHandlerInterface $module_handler, RoleStorageControllerInterface $role_storage) {
-//     $this->moduleHandler = $module_handler;
-//     $this->roleStorage = $role_storage;
-//   }
+  protected $moduleHandler;
+
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandler $module_handler) {
+    parent::__construct($config_factory);
+    $this->moduleHandler = $module_handler;
+  }
 
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('config.context.free')
+      $container->get('module_handler')
     );
   }
-
-
   /**
    * {@inheritdoc}
    */
@@ -81,7 +79,7 @@ class LogintobogganSettingsForm extends ConfigFormBase {
     '#description' => $this->t('User will have to type the same e-mail address into both fields. This helps to confirm that they\'ve typed the correct address.'),
   );
 
-  if (module_exists('help')) {
+  if (\Drupal::moduleHandler()->moduleExists('help')) {
     $help_text =  $this->t(" More help in writing the e-mail message can be found at <a href=\"!help\">LoginToboggan help</a>.", array('!help' => url('admin/help/logintoboggan')));
   }
   else {

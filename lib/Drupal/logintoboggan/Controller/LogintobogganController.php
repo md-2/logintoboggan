@@ -32,7 +32,6 @@ class LogintobogganController implements ContainerInjectionInterface {
     // - the user is still in the pre-auth role or didn't set
     //   their own password.
     // - the hashed password is correct.
-
     if (((\Drupal::config('user.settings')->get('verify_mail')
       && !$account->getLastLoginTime()) || ($pre_auth && $account->hasRole($validating_id)))
       && $hashed_pass == logintoboggan_eml_rehash($account->getPassword(), $timestamp, $account->getEmail())) {
@@ -107,7 +106,6 @@ class LogintobogganController implements ContainerInjectionInterface {
    */
   public function logintobogganResendValidation($user) {
     $account = user_load($user);
-
     /**************************************************************************/
     $account->password = t('If required, you may reset your password from: !url', array(
       '!url' => url('user/password', array('absolute' => TRUE)),
@@ -117,7 +115,7 @@ class LogintobogganController implements ContainerInjectionInterface {
     _user_mail_notify('register_no_approval_required', $account);
 
     // Notify admin or user that e-mail was sent and return to user edit form.
-    if (user_access('administer users')) {
+    if (\Drupal::currentUser()->hasPermission('administer users')) {
       drupal_set_message(t("A validation e-mail has been sent to the user's e-mail address."));
     }
     else {
@@ -135,17 +133,13 @@ class LogintobogganController implements ContainerInjectionInterface {
 
     if ($account->isAnonymous()) {
       // Output the user login form.
-      $output = logintoboggan_get_authentication_form('login');
-      drupal_set_page_content($output);
-      // Return page attributes, hide blocks.
-      $page = element_info('page');
-      $page['#logintoboggan_denied'] = TRUE;
+      $page = logintoboggan_get_authentication_form('login');
       $page['#title'] = t('Access Denied / User log in');
     }
     else {
       $page = array(
         '#title'  => t('Access Denied'),
-        '#markup' => theme('lt_access_denied'),
+        '#theme' => 'lt_access_denied',
       );
     }
 

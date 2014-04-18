@@ -7,7 +7,7 @@
 
 namespace Drupal\logintoboggan\Access;
 
-use Drupal\Core\Access\StaticAccessCheckInterface;
+use Drupal\Core\Routing\Access\AccessInterface as RoutingAccessInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Determines access to routes based on login status of current user.
  */
-class LogintobogganReValidateAccess implements StaticAccessCheckInterface {
+class LogintobogganReValidateAccess implements RoutingAccessInterface {
 
   /**
    * {@inheritdoc}

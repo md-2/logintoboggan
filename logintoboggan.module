@@ -7,6 +7,8 @@
  * This module enhances the configuration abilities of Drupal's default login system.
  */
 
+use Drupal\Core\Url;
+
 /**
  * @todo
  *
@@ -268,7 +270,9 @@ function logintoboggan_form_user_pass_reset_alter(&$form, &$form_state) {
   // Password resets count as validating an email address, so remove the user
   // from the pre-auth role if they are still in it. We only want to run this
   // code when the user first hits the reset login form.
-  if (arg(5) != 'login' && ($uid = (int) arg(2))) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path_args = explode('/', $current_path);
+  if ($path_args[5] != 'login' && ($uid = (int) $path_args[2])) {
     if ($account = user_load($uid)) {
       $id = logintoboggan_validating_id();
       $in_pre_auth_role = in_array($id, array_keys($account->getRoles()));
@@ -371,7 +375,7 @@ function logintoboggan_form_alter(&$form, &$form_state, $form_id) {
       // required or not.
       $form['registration_cancellation']['user_email_verification']['#disabled'] = true;
       $form['registration_cancellation']['user_email_verification']['#description'] = t('This setting has been locked by the LoginToboggan module.
-      You can change this setting by modifying the <strong>Set password</strong> checkbox at <a href="!link">LoginToboggan settings page</a>.', array('!link' => url('admin/config/system/logintoboggan')));
+      You can change this setting by modifying the <strong>Set password</strong> checkbox at <a href="!link">LoginToboggan settings page</a>.', array('!link' => Url::fromUserInput('/admin/config/system/logintoboggan')->toString()));
       break;
   }
 }

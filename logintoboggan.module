@@ -105,7 +105,6 @@ function logintoboggan_help($path, $arg) {
  * @ingroup logintoboggan_core
  */
 function logintoboggan_form_block_admin_configure_alter(&$form, &$form_state) {
-  dpm($form);
   if (($form['module']['#value'] == 'user') && ($form['delta']['#value'] == 'login')) {
     $form['#submit'][] = 'logintoboggan_user_block_admin_configure_submit';
 
@@ -1083,27 +1082,27 @@ function template_preprocess_lt_password_description(&$variables) {
 /**
  * Theme the Access Denied message.
  */
-function theme_lt_access_denied(&$variables) {
+function template_preprocess_lt_access_denied(&$variables) {
   $variables['access_denied'] = 'You are not authorized to access this page.';
 }
 
 /**
  * Theme the loggedinblock that shows for logged-in users.
  */
-function theme_lt_loggedinblock($variables){
-  return _theme('username', array('account' => $variables['account'])) .' | ' . l(t('Log out'), 'user/logout');
+function template_preprocess_lt_loggedinblock(&$variables){
+  $variables['loggedinblock'] = theme('username', array('account' => $variables['account'])) .' | ' . l(t('Log out'), 'user/logout');
 }
 
 /**
  * Custom theme function for the login/register link.
  */
-function theme_lt_login_link($variables) {
+function template_preprocess_lt_login_link(&$variables) {
   // Only display register text if registration is allowed.
   if (\Drupal::config('user.settings')->get('admin_role')) {
-    return t('Log in/Register');
+    $variables['login_link_text'] = t('Log in/Register');
   }
   else {
-    return t('Log in');
+    $variables['login_link_text'] = t('Log in');
   }
 }
 
@@ -1113,8 +1112,8 @@ function theme_lt_login_link($variables) {
  * @param $account
  *   A user object representing the user being logged in.
  */
-function theme_lt_login_successful_message($variables) {
-  return t('Log in successful for %name.', array('%name' => format_username($variables['account'])));
+function template_preproces_lt_login_successful_message(&$variables) {
+  $variables['login_successful_message'] =  t('Log in successful for %name.', array('%name' => format_username($variables['account'])));
 }
 
 /**
@@ -1122,7 +1121,7 @@ function theme_lt_login_successful_message($variables) {
  *
  * @ingroup themable
  */
-function theme_lt_unified_login_page($variables) {
+function template_preproces_lt_unified_login_page(&$variables) {
 
   $login_form = $variables['login_form'];
   $register_form = $variables['register_form'];
@@ -1146,5 +1145,5 @@ function theme_lt_unified_login_page($variables) {
 
   $output .= '</div>';
 
-  return $output;
+  $variables['lt_unified_login_page'] = $output;
 }

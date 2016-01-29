@@ -1090,7 +1090,8 @@ function template_preprocess_lt_access_denied(&$variables) {
  * Theme the loggedinblock that shows for logged-in users.
  */
 function template_preprocess_lt_loggedinblock(&$variables){
-  $variables['loggedinblock'] = theme('username', array('account' => $variables['account'])) .' | ' . l(t('Log out'), 'user/logout');
+  $url = Url::fromRoute('user.logout');
+  $variables['loggedinblock'] = \Drupal::theme()->render('username', array('account' => $variables['account'])) .' | ' . \Drupal::l(t('Log out'), $url);
 }
 
 /**

@@ -7,9 +7,7 @@
 
 namespace Drupal\logintoboggan\Plugin\Block;
 
-use Drupal\block\BlockBase;
-use Drupal\Component\Annotation\Plugin;
-use Drupal\Core\Annotation\Translation;
+use Drupal\Core\Block\BlockBase;
 
 /**
  * Provides a 'LoginToboggan logged' block.
@@ -22,8 +20,9 @@ use Drupal\Core\Annotation\Translation;
  */
 
 class LoginTobogganloggedBlock extends BlockBase {
- /**
-   * Implements \Drupal\block\BlockBase::blockBuild().
+
+  /**
+   * {@inheritdoc}
    */
   public function build() {
     $user = \Drupal::currentUser();

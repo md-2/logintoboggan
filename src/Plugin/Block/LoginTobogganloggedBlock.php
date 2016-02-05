@@ -7,7 +7,9 @@
 
 namespace Drupal\logintoboggan\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Provides a 'LoginToboggan logged' block.
@@ -31,5 +33,17 @@ class LoginTobogganloggedBlock extends BlockBase {
       '#account' => $user,
     );
     return $page;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    if ($account->isAnonymous()) {
+      return AccessResult::forbidden();
+    }
+    else{
+      return AccessResult::allowed();
+    }
   }
 }

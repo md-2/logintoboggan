@@ -212,7 +212,9 @@ class LogintobogganSettingsForm extends ConfigFormBase {
     foreach ($values as $key => $value) {
       if (!in_array($key, array('submit', 'form_build_id', 'form_token', 'form_id', 'op'))) {
         if ($key == 'user_email_verification') {
-          $value = !$value;
+          $userconfig = \Drupal::getContainer()->get('config.factory')->getEditable('user.settings');
+          $userconfig->set('verify_mail', !$form_state->getValue('user_email_verification'));
+          $userconfig->save();
         }
         $config ->set($key,  $value);
       }

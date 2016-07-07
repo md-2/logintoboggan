@@ -56,7 +56,7 @@ function logintoboggan_validate_email($account, $timestamp, $hashed_pass, $actio
         }
 
         drupal_set_message(t('You have successfully validated %user.', array('%user' => $account->name)));
-        drupal_goto("user/$account->uid/edit");
+        drupal_goto("user/$account->id/edit");
         break;
       // Catch all.
       default:
@@ -96,6 +96,6 @@ function logintoboggan_resend_validation($account) {
     drupal_set_message(t('A validation e-mail has been sent to your e-mail address. You will need to follow the instructions in that message in order to gain full access to the site.'));
   }
 
-  drupal_goto('user/'. $account->uid .'/edit');
+  drupal_goto('user/'. $account->id .'/edit');
 }
 

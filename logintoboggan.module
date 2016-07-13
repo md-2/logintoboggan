@@ -10,6 +10,7 @@
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\UrlHelper;
 
 /**
  * @todo
@@ -519,16 +520,15 @@ function logintoboggan_user_register_submit($form, FormStateInterface $form_stat
   drupal_set_message($message);
 
   // where do we need to redirect after registration?
-  $redirect = _logintoboggan_process_redirect($config->get('redirect_on_register'), $account);
-
+  $redirect = _logintoboggan_process_redirect(\Drupal::config('logintoboggan.settings')->get('redirect_on_register'), $account);
   // Log the user in if they created the account and immediate login is enabled.
   if($reg_pass_set && \Drupal::config('logintoboggan.settings')->get('immediate_login_on_register')) {
     //$form_state['redirect'] = logintoboggan_process_login($account, $form_state['values'], $redirect);
-    $form_state->setRedirect('<front>');
+    $form_state->setRedirectUrl($redirect);
   }
   else {
     // Redirect to the appropriate page.
-    $form_state->setRedirect($redirect);
+    $form_state->setRedirectUrl($redirect);
   }
 }
 
@@ -983,9 +983,10 @@ function _logintoboggan_protocol() {
  * @param $account
  *   The user account object associated with the redirect.
  */
-function _logintoboggan_process_redirect($redirect, $account) { // redirect = 'user';
+function _logintoboggan_process_redirect($redirect, $account) {
   $variables = array('%uid' => $account->id());
   $redirect = parse_url(urldecode(strtr($redirect, $variables)));
+  $redirect = UrlHelper::parse($redirect['path']);
 
   // If there's a path set, override the destination parameter if necessary.
   if ($redirect['path'] && \Drupal::config('logintoboggan.settings')->get('override_destination_parameter')) {
@@ -996,8 +997,7 @@ function _logintoboggan_process_redirect($redirect, $account) { // redirect = 'u
   $query = isset($redirect['query']) ? $redirect['query'] : array();
   $fragment = isset($redirect['fragment']) ? $redirect['fragment'] : '';
 
-  //return url($redirect['path'], array('query' => $query, 'fragment' => $fragment));
-  return Url::fromUserInput('/' . $redirect['path'], array('query' => $query, 'fragment' => $fragment))->toString();
+  return Url::fromUserInput('/' . $redirect['path'], array('query' => $query, 'fragment' => $fragment));
 }
 
 /**

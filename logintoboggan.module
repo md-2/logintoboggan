@@ -632,27 +632,6 @@ function _logintoboggan_user_roles_alter($account) {
 }
 
 /**
- * Implements hook_menu_link_defaults().
- */
-function logintoboggan_menu_link_defaults() {
-
-  // Settings page.
-  $links['admin.config.system.logintoboggan'] = array(
-    'link_title'       => 'LoginToboggan',
-    'description' => 'Set up custom login options like instant login, login redirects, pre-authorized validation roles, etc.',
-    'route_name'  => 'logintobogganform.settings',
-  );
-
-  // Callback for handling access denied redirection.
-  $links['toboggan/denied'] = array(
-    'title'      => 'Access denied',
-    'route_name' => 'logintoboggan.denied',
-  );
-
-  return $links;
-}
-
-/**
  * Implementation of hook_menu_alter().
  */
 function logintoboggan_menu_alter(&$callbacks) {

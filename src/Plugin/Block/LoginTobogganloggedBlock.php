@@ -22,9 +22,8 @@ use Drupal\Core\Session\AccountInterface;
  */
 
 class LoginTobogganloggedBlock extends BlockBase {
-
-  /**
-   * {@inheritdoc}
+ /**
+   * Implements \Drupal\block\BlockBase::blockBuild().
    */
   public function build() {
     $user = \Drupal::currentUser();
@@ -46,4 +45,5 @@ class LoginTobogganloggedBlock extends BlockBase {
       return AccessResult::allowed();
     }
   }
+
 }

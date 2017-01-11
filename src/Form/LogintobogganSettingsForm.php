@@ -239,6 +239,11 @@ class LogintobogganSettingsForm extends ConfigFormBase {
           $userconfig->set('verify_mail', !$form_state->getValue('user_email_verification'));
           $userconfig->save();
         }
+        if ($key == 'site_403') {
+          $site_config = \Drupal::getContainer()->get('config.factory')->getEditable('system.site');
+          $site_config->set('page.403', ($value == 0) ? '' : '/toboggan/denied');
+          $site_config->save();
+        }
         $config->set($key, $value);
       }
     }

@@ -892,6 +892,9 @@ function logintoboggan_user_login($account) {
   if (\Drupal::config('logintoboggan.settings')->get('redirect_on_confirm')) {
     drupal_set_message(_theme('login_successful_message', array('account' => $account)));
   }
+  if (\Drupal::config('logintoboggan.settings')->get('login_successful_message')) {
+    drupal_set_message(t('login successful for %user', array('%user'=>$account->get('name')->value,)));
+  }
 }
 
 /**

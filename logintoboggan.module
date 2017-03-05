@@ -1080,7 +1080,7 @@ function template_preprocess_lt_login_link(&$variables) {
  * @param $account
  *   A user object representing the user being logged in.
  */
-function template_preproces_lt_login_successful_message(&$variables) {
+function template_preprocess_lt_login_successful_message(&$variables) {
   $variables['login_successful_message'] =  t('Log in successful for %name.', array('%name' => format_username($variables['account'])));
 }
 
@@ -1089,7 +1089,7 @@ function template_preproces_lt_login_successful_message(&$variables) {
  *
  * @ingroup themable
  */
-function template_preproces_lt_unified_login_page(&$variables) {
+function template_preprocess_lt_unified_login_page(&$variables) {
 
   $login_form = $variables['login_form'];
   $register_form = $variables['register_form'];
